@@ -1,4 +1,6 @@
+import 'package:bsflutter/login_page.dart';
 import 'package:flutter/material.dart';
+
 import 'homePage.dart';
 
 void main() {
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Redditech'),
+      home: const LoginPage(title: 'Redditech'),
     );
   }
 }
