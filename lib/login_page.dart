@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'homePage.dart';
+import 'package:bsflutter/home_page/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
@@ -65,9 +65,7 @@ class _LoginPage extends State<LoginPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => const MyHomePage(
-                              title: 'Redditech',
-                            )));
+                            builder: (_) => const MyHomePage()));
                   },
                   child: const Text(
                     'Login',
