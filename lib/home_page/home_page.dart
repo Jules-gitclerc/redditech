@@ -25,7 +25,7 @@ class MyHomePageState extends State<MyHomePage> {
   static const ms = Duration(milliseconds: 1);
 
   Timer startTimeout([int? milliseconds]) {
-    var duration = milliseconds == null ? timeout : ms * milliseconds;
+    var duration = milliseconds == null ? timeout : ms * milliseconds; //TODO faire le refresh de token
     return Timer(duration, handleTimeout);
   }
 
