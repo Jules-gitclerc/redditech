@@ -1,9 +1,15 @@
-import 'package:bsflutter/home/home.dart';
-import 'package:bsflutter/my_profile/my_profile.dart';
+import 'dart:async';
+
+import 'package:bsflutter/home_page/home/home.dart';
+import 'package:bsflutter/home_page/my_profile/my_profile.dart';
 import 'package:flutter/material.dart';
 
+typedef MainRouter = void Function(int value);
+
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key, required this.switchMainRouter}) : super(key: key);
+
+  final MainRouter switchMainRouter;
 
   @override
   State<StatefulWidget> createState() {
@@ -15,6 +21,17 @@ class MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
   final Widget _home = const Home();
   final Widget _myProfile = const MyProfile();
+  static const timeout = Duration(seconds: 3);
+  static const ms = Duration(milliseconds: 1);
+
+  Timer startTimeout([int? milliseconds]) {
+    var duration = milliseconds == null ? timeout : ms * milliseconds;
+    return Timer(duration, handleTimeout);
+  }
+
+  void handleTimeout() {  // callback function
+    debugPrint("hello cela fait 3 seconds");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +39,9 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(title: const Text("Redditeck"), actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.animation),
-          tooltip: 'Show Snackbar',
+          tooltip: 'Disconnect',
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('WOOF !')));
+            widget.switchMainRouter(0);
           },
         )
       ]),

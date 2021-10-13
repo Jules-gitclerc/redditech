@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-import 'package:bsflutter/home_page/home_page.dart';
+typedef MainRouter = void Function(int value);
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key, required this.title}) : super(key: key);
+  const LoginPage({Key? key, required this.switchMainRouter}) : super(key: key);
 
-  final String title;
+  final MainRouter switchMainRouter;
 
   @override
   State<LoginPage> createState() => _LoginPage();
 }
 
 class _LoginPage extends State<LoginPage> {
-  bool _idClientError = false;
   final _controllerClientId = TextEditingController();
   final _controllerClientSecret = TextEditingController();
 
@@ -26,8 +26,7 @@ class _LoginPage extends State<LoginPage> {
     if (_controllerClientId.text != "" && _controllerClientSecret.text != "") {
       debugPrint(_controllerClientId.text);
       debugPrint(_controllerClientSecret.text);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const MyHomePage()));
+      widget.switchMainRouter(1);
       return '';
     }
     return 'Error no client id and no client secret';
@@ -69,7 +68,6 @@ class _LoginPage extends State<LoginPage> {
                     labelText: 'Client id',
                     prefixIcon: Icon(
                       Icons.person,
-                      color: Colors.blue,
                     )),
               ),
             ),
