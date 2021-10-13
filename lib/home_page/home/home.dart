@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
+  final LocalStorage storage = LocalStorage('user');
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Home"));
+    return Center(child: Text(storage.getItem('token')));
   }
 }

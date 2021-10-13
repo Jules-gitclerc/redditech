@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
+import 'package:localstorage/localstorage.dart';
 
 typedef MainRouter = void Function(int value);
 
@@ -13,108 +17,55 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
-  final _controllerClientId = TextEditingController();
-  final _controllerClientSecret = TextEditingController();
-
-  String _onTokenGo() {
-    if (_controllerClientId.text == "" && _controllerClientSecret.text != "") {
-      return 'Error no client id';
-    }
-    if (_controllerClientId.text != "" && _controllerClientSecret.text == "") {
-      return 'Error no client secret';
-    }
-    if (_controllerClientId.text != "" && _controllerClientSecret.text != "") {
-      debugPrint(_controllerClientId.text);
-      debugPrint(_controllerClientSecret.text);
-      widget.switchMainRouter(1);
-      return '';
-    }
-    return 'Error no client id and no client secret';
-  }
+  static const String clientId = 'SjUvT9xx-DqV9ig65JTCmA';
+  static const String clientSecret = 'ra2dL8KdqufMIiPXfRnMnHeVk0NJCw';
+  static const String scope = 'identity+read';
+  final LocalStorage storage = LocalStorage('user');
 
   @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    _controllerClientId.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    // Enable hybrid composition.
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
+
+  Future<void> requestToken(String url) async {
+    var uri = Uri.parse(url);
+    var urlAccess = Uri.parse('https://www.reddit.com/api/v1/access_token');
+    String code = '';
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$clientId:$clientSecret'));
+
+    uri.queryParameters.forEach((k, v) async {
+      if (k == "code") {
+        code = v;
+        debugPrint('Code for token = $code');
+        final response = await post(urlAccess, body: {
+          'redirect_uri': 'https://www.google.com',
+          'grant_type': 'authorization_code',
+          'code': code,
+        }, headers: <String, String>{'authorization': basicAuth});
+        print(response.statusCode);
+        final parsedJson = jsonDecode(response.body);
+        print('Token : ${parsedJson['access_token']}');
+        storage.setItem('token', parsedJson['access_token']);
+        widget.switchMainRouter(1);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text("Login Page"),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Center(
-                child: SizedBox(
-                    width: 200,
-                    height: 150,
-                    child: Image.asset('images/Redditech.png')),
-              ),
-            ),
-            Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: _controllerClientId,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Client id',
-                    prefixIcon: Icon(
-                      Icons.person,
-                    )),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: _controllerClientSecret,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red)),
-                    prefixIcon: Icon(
-                      Icons.password_sharp,
-                      color: Colors.blue,
-                    ),
-                    labelText: 'Client secret'),
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Container(
-                  height: 50,
-                  width: 250,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: FlatButton(
-                    onPressed: () {
-                      String returnValue = _onTokenGo();
-                      if (returnValue != "") {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text(returnValue)));
-                      }
-                    },
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(color: Colors.white, fontSize: 25),
-                    ),
-                  ),
-                )),
-            const SizedBox(
-              height: 130,
-            ),
-          ],
-        ),
-      ),
+    return WebView(
+      initialUrl: 'https://www.reddit.com/api/v1/authorize.compact?client_id=$clientId&response_type=code&redirect_uri=https://www.google.com&duration=temporary&scope=$scope&state=code_authorize',
+      onProgress: (int progress) {
+        debugPrint("WebView is loading (progress : $progress%)");
+      },
+      onPageFinished: (String url) async {
+        await requestToken(url);
+      },
     );
   }
 }
