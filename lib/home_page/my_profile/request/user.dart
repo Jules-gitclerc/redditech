@@ -19,16 +19,28 @@ Future<User> fetchUser() async {
 class User {
   final String displayName;
   final String avatarUrl;
+  final String idUser;
+  final int coins;
+  final int karma;
+  final int numberFriend;
 
   User({
     required this.displayName,
     required this.avatarUrl,
+    required this.idUser,
+    required this.coins,
+    required this.karma,
+    required this.numberFriend,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       displayName: json['name'],
       avatarUrl: json['icon_img'],
+      idUser: json['id'],
+      coins: json['coins'],
+      karma: json['total_karma'],
+      numberFriend: json['num_friends'],
     );
   }
 }
