@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 typedef MainRouter = void Function(int value);
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.switchMainRouter}) : super(key: key);
+  const MyHomePage({Key? key, required this.switchMainRouter})
+      : super(key: key);
 
   final MainRouter switchMainRouter;
 
@@ -25,38 +26,61 @@ class MyHomePageState extends State<MyHomePage> {
   static const ms = Duration(milliseconds: 1);
 
   Timer startTimeout([int? milliseconds]) {
-    var duration = milliseconds == null ? timeout : ms * milliseconds; //TODO faire le refresh de token
+    var duration = milliseconds == null
+        ? timeout
+        : ms * milliseconds; //TODO faire le refresh de token
     return Timer(duration, handleTimeout);
   }
 
-  void handleTimeout() {  // callback function
+  void handleTimeout() {
+    // callback function
     debugPrint("hello cela fait 3 seconds");
+  }
+
+  String getNameApp() {
+    if (selectedIndex == 0) {
+      return "Redditech";
+    } else {
+      return "Profile";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Redditeck"), actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.animation),
-          tooltip: 'Disconnect',
-          onPressed: () {
-            widget.switchMainRouter(0);
-          },
-        )
-      ]),
+      appBar: AppBar(
+          elevation: 0,
+          title: Text(
+            getNameApp(),
+            style: const TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white,
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.black,
+              ),
+              tooltip: 'Disconnect',
+              onPressed: () {
+                widget.switchMainRouter(0);
+              },
+            )
+          ]),
       body: getBody(),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black54,
+        elevation: 0,
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text("Home"),
+            icon: Icon((selectedIndex == 0 ? Icons.home : Icons.home_outlined), color: Colors.white),
+            title: const Text("Home", style: TextStyle(color: Colors.white)),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text("Profile"),
+            icon: Icon((selectedIndex == 1 ? Icons.person : Icons.person_outline), color: Colors.white),
+            title: const Text("Profile", style: TextStyle(color: Colors.white)),
           )
         ],
         onTap: (int index) {
