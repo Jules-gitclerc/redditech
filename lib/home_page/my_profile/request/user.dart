@@ -20,6 +20,7 @@ class User {
   final String displayName;
   final String avatarUrl;
   final String idUser;
+  final String description;
   final int coins;
   final int karma;
   final int numberFriend;
@@ -31,9 +32,12 @@ class User {
     required this.coins,
     required this.karma,
     required this.numberFriend,
+    required this.description,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    var data = json['subreddit'];
+
     return User(
       displayName: json['name'],
       avatarUrl: json['icon_img'],
@@ -41,6 +45,7 @@ class User {
       coins: json['coins'],
       karma: json['total_karma'],
       numberFriend: json['num_friends'],
+      description: data['description'],
     );
   }
 }
