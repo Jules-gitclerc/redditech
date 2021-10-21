@@ -1,5 +1,6 @@
 import 'package:bsflutter/home_page/my_profile/request/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({Key? key}) : super(key: key);
@@ -21,121 +22,147 @@ class _MyProfile extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        body: Center(
-          child: FutureBuilder<User>(
-            future: futureUser,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data!.avatarUrl == null) {
-                  return Text('${snapshot.error}');
-                } else {
-                  return Scaffold(
-                      body: SafeArea(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                            width: double.infinity,
-                            height: 200,
-                            child: Card(
-                                elevation: 3,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(snapshot.data!.avatarUrl),
-                                      radius: 60.0,
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(snapshot.data!.displayName)),
-                                  ],
-                                ))),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: SizedBox(
-                                height: 70,
-                                child: Card(
-                                  elevation: 5,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      const Text('Karma'),
-                                      Text(snapshot.data!.karma.toString())
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ),
-                            Expanded(
-                              child: SizedBox(
-                                height: 70,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(color: Colors.blueAccent),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: const Offset(0, 3),
-                                      )
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.money_outlined,
-                                        size: 30.0,
-                                      ),
-                                      Text(snapshot.data!.coins.toString())
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ),
-                            Expanded(
-                              child: SizedBox(
-                                height: 70,
-                                child: Card(
-                                  elevation: 5,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.child_friendly,
-                                        size: 30.0,
-                                      ),
-                                      Text(snapshot.data!.numberFriend.toString())
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ),
-                          ],
-                        ),
-                      ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: FutureBuilder<User>(
+          future: futureUser,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Center(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(25),
+                      child: buildImage(snapshot.data!.avatarUrl),
                     ),
-                  ));
-                }
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
-            },
-          ),
+                    const SizedBox(height: 10),
+                    buildName(
+                        snapshot.data!.displayName, snapshot.data!.idUser),
+                    const SizedBox(height: 40),
+                    buildKarmaCoin(
+                        snapshot.data!.karma.toString(),
+                        snapshot.data!.coins.toString(),
+                        MediaQuery.of(context).size.width),
+                    const SizedBox(height: 40),
+                    Row(children: const [
+                      Padding(
+                          padding: EdgeInsets.only(left: 30, top: 10),
+                          child: Text(
+                            "Description",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
+                          )),
+                    ]),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 7,
+                      margin: const EdgeInsets.all(17.0),
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        border: Border.all(color: Colors.black),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15.0)),
+                      ),
+                      child: Text(
+                        snapshot.data!.description,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 20),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+            // By default, show a loading spinner.
+            return const CircularProgressIndicator();
+          },
         ),
-      );
-    }
+      ),
+    );
+  }
 }
+
+Widget buildImage(imagePath) {
+  final image = NetworkImage(imagePath);
+
+  return ClipOval(
+    child: Material(
+      color: Colors.transparent,
+      child: Ink.image(
+        image: image,
+        fit: BoxFit.cover,
+        width: 128,
+        height: 128,
+        child: const InkWell(),
+      ),
+    ),
+  );
+}
+
+Widget buildCircle({
+  required Widget child,
+  required double all,
+  required Color color,
+}) =>
+    ClipOval(
+      child: Container(
+        padding: EdgeInsets.all(all),
+        color: color,
+        child: child,
+      ),
+    );
+
+Widget buildName(name, userID) => Column(
+      children: [
+        Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          userID,
+          style: const TextStyle(color: Colors.grey),
+        )
+      ],
+    );
+
+Widget buildKarmaCoin(karma, coins, sizeWidth) => Row(
+      children: [
+        SizedBox(
+          width: sizeWidth / 2,
+          child: Column(children: [
+            Text(
+              karma,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              "Karma",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+            ),
+          ]),
+        ),
+        SizedBox(
+          width: sizeWidth / 2,
+          child: Column(children: [
+            Text(
+              coins,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              "Coins",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+            )
+          ]),
+        ),
+      ],
+    );

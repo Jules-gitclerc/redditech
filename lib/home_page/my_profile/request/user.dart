@@ -37,7 +37,6 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     var data = json['subreddit'];
-
     return User(
       displayName: json['name'],
       avatarUrl: json['icon_img'],
@@ -45,7 +44,7 @@ class User {
       coins: json['coins'],
       karma: json['total_karma'],
       numberFriend: json['num_friends'],
-      description: data['description'],
+      description: data['public_description'],
     );
   }
 }

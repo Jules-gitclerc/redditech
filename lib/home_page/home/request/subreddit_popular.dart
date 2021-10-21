@@ -17,7 +17,7 @@ Future<List<HotPosts>> fetchHotPosts(int limit) async {
     var deep = rest['children'] as List;
 
     list = deep.map<HotPosts>((json) => HotPosts.fromJson(json)).toList();
-    return list;
+    return list;//amp;
   } else {
     debugPrint('/subreddits/popular?limit=$limit: ${response.statusCode}');
     throw Exception('Failed to load post hot information');
@@ -54,13 +54,40 @@ class HotPosts {
   factory HotPosts.fromJson(Map<String, dynamic> json) {
     var data = json['data'];
     var listUrlImageConstructor = [];
+    var listUrlImageConstructorTmp = [];
     var listUrlVideoConstructor = [];
+    var listUrlVideoConstructorTmp = [];
+    var listGallery = [];
+    var galleryData = [];
 
     if (data['preview'] != null) {
-      data['preview']['images'].forEach(
-          (item) => listUrlImageConstructor.add(item['source']['url']));
-      data['preview']['videos'].forEach(
-          (item) => listUrlVideoConstructor.add(item['source']['url']));
+      if (data['preview']['images'] != null) {
+        data['preview']['images'].forEach(
+            (item) => listUrlImageConstructor.add(item['source']['url']));
+        for (var element in listUrlImageConstructor) {
+          listUrlImageConstructorTmp.add(element.replaceAll("amp;", ""));
+        }
+      }
+      if (data['preview']['videos'] != null) {
+        data['preview']['videos'].forEach(
+            (item) => listUrlVideoConstructor.add(item['source']['url']));
+        for (var element in listUrlVideoConstructor) {
+          listUrlVideoConstructorTmp.add(element.replaceAll("amp;", ""));
+        }
+      }
+    }
+
+    if (data['gallery_data'] != null) {
+      if (data['gallery_data']['items'] != null) {
+        data['gallery_data']['items'].map((item) => galleryData.add(item.media_id));
+      }
+    }
+
+    if (galleryData.isNotEmpty) {
+      for (var elem in galleryData) {
+        var url = data['media_metadata'][elem]['s']['u'];
+        listGallery.add(url.replaceAll("amp;", ""));
+      }
     }
 
     return HotPosts(
@@ -73,7 +100,7 @@ class HotPosts {
       permalink: data['permalink'],
       numComments: data['num_comments'],
       author: data['author'],
-      listUrlImage: listUrlImageConstructor,
+      listUrlImage: listUrlImageConstructorTmp,
       listUrlVideo: listUrlVideoConstructor,
     );
   }
