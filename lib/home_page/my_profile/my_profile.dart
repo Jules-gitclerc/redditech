@@ -1,8 +1,7 @@
 import 'package:bsflutter/home_page/my_profile/request/user.dart';
 import 'package:flutter/material.dart';
-
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:bsflutter/home_page/my_profile/settings_profile.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({Key? key}) : super(key: key);
@@ -15,6 +14,7 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfile extends State<MyProfile> {
   late Future<User> futureUser;
+  int index = 0;
 
   @override
   void initState() {
@@ -35,44 +35,107 @@ class _MyProfile extends State<MyProfile> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(25),
+                      padding: const EdgeInsets.all(20),
                       child: buildImage(snapshot.data!.avatarUrl),
                     ),
-                    const SizedBox(height: 10),
-                    buildName(
-                        snapshot.data!.displayName, snapshot.data!.idUser),
-                    const SizedBox(height: 40),
-                    buildKarmaCoin(
-                        snapshot.data!.karma.toString(),
-                        snapshot.data!.coins.toString(),
-                        MediaQuery.of(context).size.width),
-                    const SizedBox(height: 40),
-                    Row(children: const [
-                      Padding(
-                          padding: EdgeInsets.only(left: 30, top: 10),
-                          child: Text(
-                            "Description",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
-                          )),
-                    ]),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 7,
-                      margin: const EdgeInsets.all(17.0),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.black12,
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15.0)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: buildName(snapshot.data!.displayName),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: buildKarmaCoin(
+                          snapshot.data!.karma.toString(),
+                          snapshot.data!.coins.toString(),
+                          snapshot.data!.numberFriend.toString()),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(16.0),
+                              primary: Colors.black,
+                              textStyle: const TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const SettingsProfile()));
+                            },
+                            child: const Text('Modifier le profil'),
+                          ),
+                        ],
                       ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15, bottom: 25),
                       child: Text(
-                        snapshot.data!.description,
+                        "\"${snapshot.data!.description}\"",
                         style: const TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 20),
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15),
                       ),
-                    )
+                    ),
+                    Container(
+                      height: 52,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black12)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    index = 0;
+                                  },
+                                  icon: Icon(index == 0
+                                      ? Icons.add_comment
+                                      : Icons.add_comment_outlined)),
+                              Container(
+                                color: Colors.black,
+                                height: 2,
+                                width: 55,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              IconButton(
+                                  onPressed: () {
+                                    index = 1;
+                                  },
+                                  icon: Icon(index == 0
+                                      ? Icons.add_to_photos_outlined
+                                      : Icons.add_to_photos)),
+                              Container(
+                                color: Colors.transparent,
+                                height: 2,
+                                width: 55,
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               );
@@ -91,14 +154,16 @@ class _MyProfile extends State<MyProfile> {
 Widget buildImage(imagePath) {
   final image = NetworkImage(imagePath);
 
+  print(imagePath);
+
   return ClipOval(
     child: Material(
       color: Colors.transparent,
       child: Ink.image(
         image: image,
         fit: BoxFit.cover,
-        width: 128,
-        height: 128,
+        width: 100,
+        height: 100,
         child: const InkWell(),
       ),
     ),
@@ -118,53 +183,73 @@ Widget buildCircle({
       ),
     );
 
-Widget buildName(name, userID) => Column(
+Widget buildName(name) => Column(
       children: [
         Text(
           name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
-        const SizedBox(height: 4),
-        Text(
-          userID,
-          style: const TextStyle(color: Colors.grey),
-        )
       ],
     );
 
-Widget buildKarmaCoin(karma, coins, sizeWidth) => Row(
-      children: [
-        SizedBox(
-          width: sizeWidth / 2,
-          child: Column(children: [
-            Text(
-              karma,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            const SizedBox(height: 4),
-            const Text(
-              "Karma",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
-            ),
-          ]),
-        ),
-        SizedBox(
-          width: sizeWidth / 2,
-          child: Column(children: [
-            Text(
-              coins,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            const SizedBox(height: 4),
-            const Text(
-              "Coins",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
-            )
-          ]),
-        ),
-      ],
+Widget buildKarmaCoin(karma, coins, friends) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(children: [
+              Text(
+                karma,
+                textAlign: TextAlign.center,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 4),
+                child: Text(
+                  "Karma",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+                ),
+              ),
+            ]),
+          ),
+          Expanded(
+            child: Column(children: [
+              Text(
+                friends,
+                textAlign: TextAlign.center,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 4),
+                child: Text(
+                  "Friends",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+                ),
+              ),
+            ]),
+          ),
+          Expanded(
+            child: Column(children: [
+              Text(
+                coins,
+                textAlign: TextAlign.center,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 4),
+                child: Text(
+                  "Coins",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15),
+                ),
+              ),
+            ]),
+          ),
+        ],
+      ),
     );
