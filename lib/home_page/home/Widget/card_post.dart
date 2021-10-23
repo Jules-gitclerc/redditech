@@ -1,3 +1,4 @@
+import 'package:bsflutter/home_page/home/posts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -45,6 +46,9 @@ class CardPosts extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(data.urlAvatarSubreddit),
+          ),
           Text('${data.subredditNamePrefixed} : Posted by ${data.author}'),
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -57,7 +61,10 @@ class CardPosts extends StatelessWidget {
             children: [
               Expanded(
                 child:
-                    TextButton(onPressed: () {}, child: const Text("comment")),
+                    TextButton(onPressed: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => Posts(data: data)));
+                    }, child: const Text("comment")),
               ),
               Expanded(
                 child: TextButton(onPressed: () {}, child: const Text("like")),

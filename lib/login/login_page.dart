@@ -22,6 +22,8 @@ class _LoginPage extends State<LoginPage> {
   static const String scope = 'identity+read';
   final LocalStorage storage = LocalStorage('user');
 
+  bool isOnApi = false;
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +48,9 @@ class _LoginPage extends State<LoginPage> {
           'redirect_uri': 'https://www.google.com',
           'grant_type': 'authorization_code',
           'code': code,
-        }, headers: <String, String>{'authorization': basicAuth});
+        }, headers: <String, String>{
+          'authorization': basicAuth
+        });
         print(response.statusCode);
         final parsedJson = jsonDecode(response.body);
         print('Token : ${parsedJson['access_token']}');
@@ -58,14 +62,44 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      initialUrl: 'https://www.reddit.com/api/v1/authorize.compact?client_id=$clientId&response_type=code&redirect_uri=https://www.google.com&duration=temporary&scope=$scope&state=code_authorize',
-      onProgress: (int progress) {
-        debugPrint("WebView is loading (progress : $progress%)");
-      },
-      onPageFinished: (String url) async {
-        await requestToken(url);
-      },
+    if (isOnApi) {
+      return WebView(
+        initialUrl:
+            'https://www.reddit.com/api/v1/authorize.compact?client_id=$clientId&response_type=code&redirect_uri=https://www.google.com&duration=temporary&scope=$scope&state=code_authorize',
+        onProgress: (int progress) {
+          debugPrint("WebView is loading (progress : $progress%)");
+        },
+        onPageFinished: (String url) async {
+          await requestToken(url);
+        },
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+          iconTheme: const IconThemeData(
+            color: Colors.black, //change your color here
+          ),
+          elevation: 0,
+          title: const Text(
+            "Reddicted",
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white,
+      ),
+      body: Column(
+          children: [
+            const Text("mettre le logo"),
+            OutlinedButton(
+              onPressed: () {
+                setState(() {
+                  isOnApi = true;
+                });
+              },
+              child: const Text('Login on reddit'),
+            ),
+          ],
+        ),
     );
   }
 }

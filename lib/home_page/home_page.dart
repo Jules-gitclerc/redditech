@@ -20,7 +20,7 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
-  final Widget _home = Home();
+  final Widget _home = const Home();
   final Widget _myProfile = const MyProfile();
   static const timeout = Duration(seconds: 3);
   static const ms = Duration(milliseconds: 1);

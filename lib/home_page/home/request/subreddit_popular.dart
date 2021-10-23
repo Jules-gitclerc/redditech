@@ -1,29 +1,3 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart';
-import 'package:localstorage/localstorage.dart';
-
-Future<List<HotPosts>> fetchHotPosts(int limit) async {
-  final LocalStorage storage = LocalStorage('user');
-  final response = await get(
-      Uri.parse('https://oauth.reddit.com/hot?limit=$limit&g=GLOBAL'),
-      headers: {'authorization': 'Bearer ${storage.getItem('token')}'});
-  List<HotPosts> list;
-
-  if (response.statusCode == 200) {
-    var data = jsonDecode(response.body);
-    var rest = data['data'];
-    var deep = rest['children'] as List;
-
-    list = deep.map<HotPosts>((json) => HotPosts.fromJson(json)).toList();
-    return list;//amp;
-  } else {
-    debugPrint('/subreddits/popular?limit=$limit: ${response.statusCode}');
-    throw Exception('Failed to load post hot information');
-  }
-}
-
 class HotPosts {
   final String title;
   final String subreddit;
@@ -34,6 +8,7 @@ class HotPosts {
   final int numComments;
   final String permalink;
   final String author;
+  late final String urlAvatarSubreddit;
   final List<dynamic> listUrlImage;
   final List<dynamic> listUrlVideo;
 
@@ -49,6 +24,7 @@ class HotPosts {
     required this.author,
     required this.listUrlImage,
     required this.listUrlVideo,
+    required this.urlAvatarSubreddit,
   });
 
   factory HotPosts.fromJson(Map<String, dynamic> json) {
@@ -59,6 +35,7 @@ class HotPosts {
     var listUrlVideoConstructorTmp = [];
     var listGallery = [];
     var galleryData = [];
+    var urlLogoSub = '';
 
     if (data['preview'] != null) {
       if (data['preview']['images'] != null) {
@@ -90,6 +67,10 @@ class HotPosts {
       }
     }
 
+    if (data['sr_detail'] != null) {
+      urlLogoSub = data['sr_detail']['icon_img'];
+    }
+
     return HotPosts(
       title: data['title'],
       subreddit: data['subreddit'],
@@ -102,6 +83,7 @@ class HotPosts {
       author: data['author'],
       listUrlImage: listUrlImageConstructorTmp,
       listUrlVideo: listUrlVideoConstructor,
+      urlAvatarSubreddit: urlLogoSub,
     );
   }
 }

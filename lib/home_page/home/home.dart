@@ -18,7 +18,8 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> {
   List<HotPosts> hotPosts = [];
-  bool isLoading = false;
+  String dropdownValue = '/hot';
+  bool isLoading = true;
   bool isError = false;
 
   @override
@@ -30,7 +31,7 @@ class _Home extends State<Home> {
   Future loadDataPosts(limit) async {
     final LocalStorage storage = LocalStorage('user');
     final response = await get(
-        Uri.parse('https://oauth.reddit.com/hot?limit=$limit&g=GLOBAL'),
+        Uri.parse('https://oauth.reddit.com$dropdownValue?limit=$limit&g=GLOBAL&sr_detail=true'),
         headers: {'authorization': 'Bearer ${storage.getItem('token')}'});
     List<HotPosts> list;
 
@@ -44,7 +45,7 @@ class _Home extends State<Home> {
         isLoading = false;
         hotPosts.addAll(list);
       });
-      return; //amp;
+      return;
     } else {
       debugPrint('/subreddits/popular?limit=$limit: ${response.statusCode}');
       setState(() {
@@ -59,6 +60,57 @@ class _Home extends State<Home> {
     return Scaffold(
       body: Column(
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: InputDecorator(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                contentPadding: const EdgeInsets.all(10),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: const Icon(Icons.search),
+                  isDense: true,
+                  isExpanded: true,
+                  items: const [
+                    DropdownMenuItem(
+                      value: '/hot',
+                      child: Text("Hot"),
+                    ),
+                    DropdownMenuItem(
+                      value: '/best',
+                      child: Text("Best"),
+                    ),
+                    DropdownMenuItem(
+                      value: '/new',
+                      child: Text("New"),
+                    ),
+                    DropdownMenuItem(
+                      value: '/random',
+                      child: Text("Random"),
+                    ),
+                    DropdownMenuItem(
+                      value: '/rising',
+                      child: Text("Rising"),
+                    ),
+                    DropdownMenuItem(
+                      value: '/top',
+                      child: Text("Top"),
+                    ),
+                  ],
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValue = newValue!;
+                      isLoading = true;
+                    });
+                    hotPosts.removeAt(0);
+                    loadDataPosts(5);
+                  },
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: NotificationListener<ScrollNotification>(
                 child: ListView.builder(
