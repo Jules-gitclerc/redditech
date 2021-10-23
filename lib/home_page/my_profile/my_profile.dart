@@ -14,12 +14,16 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfile extends State<MyProfile> {
   late Future<User> futureUser;
-  int index = 0;
+  bool selected = true;
 
   @override
   void initState() {
     super.initState();
     futureUser = fetchUser();
+  }
+
+  Widget createTabBar() {
+    return buildContainerTabBar();
   }
 
   @override
@@ -104,13 +108,15 @@ class _MyProfile extends State<MyProfile> {
                             children: [
                               IconButton(
                                   onPressed: () {
-                                    index = 0;
+                                    setState(() {
+                                      selected = !selected;
+                                    });
                                   },
-                                  icon: Icon(index == 0
+                                  icon: Icon(!selected
                                       ? Icons.add_comment
                                       : Icons.add_comment_outlined)),
                               Container(
-                                color: Colors.black,
+                                color: !selected ? Colors.black : Colors.transparent,
                                 height: 2,
                                 width: 55,
                               ),
@@ -121,13 +127,13 @@ class _MyProfile extends State<MyProfile> {
                             children: <Widget>[
                               IconButton(
                                   onPressed: () {
-                                    index = 1;
+                                    setState(() {
+                                      selected = !selected;
+                                    });
                                   },
-                                  icon: Icon(index == 0
-                                      ? Icons.add_to_photos_outlined
-                                      : Icons.add_to_photos)),
+                                  icon: Icon(!selected ? Icons.add_to_photos_outlined : Icons.add_to_photos)),
                               Container(
-                                color: Colors.transparent,
+                                color: !selected ? Colors.transparent : Colors.black,
                                 height: 2,
                                 width: 55,
                               )
@@ -252,4 +258,10 @@ Widget buildKarmaCoin(karma, coins, friends) => Padding(
           ),
         ],
       ),
+    );
+
+Widget buildContainerTabBar() => Container(
+      color: Colors.black,
+      height: 2,
+      width: 55,
     );
