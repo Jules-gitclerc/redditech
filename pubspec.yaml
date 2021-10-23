@@ -38,6 +38,7 @@ dependencies:
   http: ^0.13.4
   localstorage: ^4.0.0+1
   animated_theme_switcher: ^2.0.1
+  settings_ui: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bsflutter/home_page/home_page.dart';
 import 'package:bsflutter/login/login_page.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class SettingsProfile extends StatefulWidget {
   const SettingsProfile({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class SettingsProfile extends StatefulWidget {
 }
 
 class _SettingsProfile extends State<SettingsProfile> {
-  @override
+   late bool value = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +37,28 @@ class _SettingsProfile extends State<SettingsProfile> {
               Navigator.pop(context);
             },
           )),
+      body: Center(
+          child: SettingsList(
+        sections: [
+          SettingsSection(
+            title: 'Section',
+            tiles: [
+              SettingsTile(
+                title: 'Language',
+                subtitle: 'English',
+                leading: const Icon(Icons.language),
+                onPressed: (BuildContext context) {},
+              ),
+              SettingsTile.switchTile(
+                title: 'Use fingerprint',
+                leading: const Icon(Icons.fingerprint),
+                switchValue: value,
+                onToggle: (bool value) {},
+              ),
+            ],
+          ),
+        ],
+      )),
     );
   }
 }
