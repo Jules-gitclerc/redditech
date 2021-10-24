@@ -1,5 +1,5 @@
 import 'package:bsflutter/home_page/home/Widget/card_post.dart';
-import 'package:bsflutter/home_page/home/request/subreddit_popular.dart';
+import 'package:bsflutter/home_page/home/request/hot_posts.dart';
 import 'package:flutter/material.dart';
 
 class Posts extends StatefulWidget {
@@ -23,7 +23,7 @@ class _Posts extends State<Posts> {
             ),
             elevation: 0,
             title: const Text(
-              "Reddicted",
+              "Reddictek",
               style: TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.white,

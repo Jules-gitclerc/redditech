@@ -1,5 +1,5 @@
 import 'package:bsflutter/home_page/home/Widget/card_post.dart';
-import 'package:bsflutter/home_page/home/request/subreddit_popular.dart';
+import 'package:bsflutter/home_page/home/request/hot_posts.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -19,6 +19,7 @@ class Home extends StatefulWidget {
 class _Home extends State<Home> {
   List<HotPosts> hotPosts = [];
   String dropdownValue = '/hot';
+  String after = '';
   bool isLoading = true;
   bool isError = false;
 
@@ -31,7 +32,7 @@ class _Home extends State<Home> {
   Future loadDataPosts(limit) async {
     final LocalStorage storage = LocalStorage('user');
     final response = await get(
-        Uri.parse('https://oauth.reddit.com$dropdownValue?limit=$limit&g=GLOBAL&sr_detail=true'),
+        Uri.parse('https://oauth.reddit.com$dropdownValue?limit=$limit&g=GLOBAL&sr_detail=true&after=$after'),
         headers: {'authorization': 'Bearer ${storage.getItem('token')}'});
     List<HotPosts> list;
 
@@ -44,7 +45,9 @@ class _Home extends State<Home> {
       setState(() {
         isLoading = false;
         hotPosts.addAll(list);
+        after = rest['after'];
       });
+      print(after);
       return;
     } else {
       debugPrint('/subreddits/popular?limit=$limit: ${response.statusCode}');
@@ -101,6 +104,7 @@ class _Home extends State<Home> {
                   ],
                   onChanged: (String? newValue) {
                     setState(() {
+                      after = '';
                       dropdownValue = newValue!;
                       isLoading = true;
                     });

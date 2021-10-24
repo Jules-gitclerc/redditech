@@ -37,9 +37,11 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     var data = json['subreddit'];
+    var avatar = json['icon_img'].replaceAll("amp;", "");
+
     return User(
       displayName: json['name'],
-      avatarUrl: json['icon_img'],
+      avatarUrl: avatar,
       idUser: json['id'],
       coins: json['coins'],
       karma: json['total_karma'],

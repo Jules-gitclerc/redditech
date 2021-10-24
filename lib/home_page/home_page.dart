@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bsflutter/home_page/home/home.dart';
 import 'package:bsflutter/home_page/my_profile/my_profile.dart';
+import 'package:bsflutter/home_page/search/search.dart';
 import 'package:flutter/material.dart';
 
 typedef MainRouter = void Function(int value);
@@ -22,8 +23,10 @@ class MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
   final Widget _home = const Home();
   final Widget _myProfile = const MyProfile();
+  final Widget _search = const Search();
   static const timeout = Duration(seconds: 3);
   static const ms = Duration(milliseconds: 1);
+
 
   Timer startTimeout([int? milliseconds]) {
     var duration = milliseconds == null
@@ -40,6 +43,8 @@ class MyHomePageState extends State<MyHomePage> {
   String getNameApp() {
     if (selectedIndex == 0) {
       return "Redditech";
+    } else if (selectedIndex == 1) {
+      return 'Search subreddit';
     } else {
       return "Profile";
     }
@@ -79,7 +84,11 @@ class MyHomePageState extends State<MyHomePage> {
             title: const Text("Home", style: TextStyle(color: Colors.white)),
           ),
           BottomNavigationBarItem(
-            icon: Icon((selectedIndex == 1 ? Icons.person : Icons.person_outline), color: Colors.white),
+            icon: Icon((selectedIndex == 1 ? Icons.search : Icons.search_outlined), color: Colors.white),
+            title: const Text("Search", style: TextStyle(color: Colors.white)),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon((selectedIndex == 2 ? Icons.person : Icons.person_outline), color: Colors.white),
             title: const Text("Profile", style: TextStyle(color: Colors.white)),
           )
         ],
@@ -93,6 +102,8 @@ class MyHomePageState extends State<MyHomePage> {
   Widget getBody() {
     if (selectedIndex == 0) {
       return _home;
+    } else if (selectedIndex == 1) {
+      return _search;
     } else {
       return _myProfile;
     }

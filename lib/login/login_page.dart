@@ -27,7 +27,6 @@ class _LoginPage extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    // Enable hybrid composition.
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
     }

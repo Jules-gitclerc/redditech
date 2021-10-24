@@ -1,4 +1,5 @@
 import 'package:bsflutter/home_page/home/posts.dart';
+import 'package:bsflutter/home_page/home/subreddit_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -31,9 +32,7 @@ class CardPosts extends StatelessWidget {
     }
     if (data.selfTextHtml != null && data.selfTextHtml != "") {
       return Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(data.selfText)
-      );
+          padding: const EdgeInsets.all(10.0), child: Text(data.selfText));
     }
     return const Text("");
   }
@@ -46,10 +45,41 @@ class CardPosts extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(data.urlAvatarSubreddit),
+          Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(data.urlAvatarSubreddit),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(50, 30),
+                          alignment: Alignment.centerLeft,
+                      ),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => SubredditPage(idSub: data.subredditNamePrefixed,)));
+                      },
+                      child: Text(data.subredditNamePrefixed),
+                    ),
+                    Text(
+                        'Posted by u/${data.author}',
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey,
+                        ),
+                    ),
+                  ],
+                ),
+              ],
           ),
-          Text('${data.subredditNamePrefixed} : Posted by ${data.author}'),
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
             child: Text(data.title,
@@ -59,12 +89,19 @@ class CardPosts extends StatelessWidget {
           ..._getImage(data.listUrlImage),
           Row(
             children: [
-              Expanded(
-                child:
-                    TextButton(onPressed: () {
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (_) => Posts(data: data)));
-                    }, child: const Text("comment")),
+              GestureDetector(
+                child: Chip(
+                  avatar: const Icon(
+                    Icons.add_comment_outlined,
+                    size: 18,
+                  ),
+                  label: Text(data.numComments.toString()),
+                ),
+                onTap: () {
+                  //Prints the label of each tapped chip
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => Posts(data: data)));
+                },
               ),
               Expanded(
                 child: TextButton(onPressed: () {}, child: const Text("like")),
