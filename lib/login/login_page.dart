@@ -75,30 +75,57 @@ class _LoginPage extends State<LoginPage> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          elevation: 0,
-          title: const Text(
-            "Reddicted",
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white,
-      ),
-      body: Column(
-          children: [
-            const Text("mettre le logo"),
-            OutlinedButton(
-              onPressed: () {
-                setState(() {
-                  isOnApi = true;
-                });
-              },
-              child: const Text('Login on reddit'),
-            ),
-          ],
+        iconTheme: const IconThemeData(
+          color: Colors.black, //change your color here
         ),
+        elevation: 0,
+        title: const Text(
+          "Login",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+      ),
+      body: Center(
+          child: Padding(
+            padding:
+            EdgeInsets.only(top: MediaQuery.of(context).size.height / 2 - 380),
+            child: Column(
+              children: [
+                Container(
+                  width: 350.0,
+                  height: 350.0,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('images/Redditech.png'),
+                        fit: BoxFit.fill),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 100,
+                  height: 60.0,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        isOnApi = true;
+                      });
+                    },
+                    style: OutlinedButton.styleFrom(
+                        primary: Colors.black,
+                        backgroundColor: Colors.white,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                        side: const BorderSide(width: 1.0, color: Colors.black)),
+                    child: const Text('Login on reddit',
+                        style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }
