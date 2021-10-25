@@ -6,7 +6,12 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html_unescape/html_unescape.dart';
 
 class CardPosts extends StatelessWidget {
-  const CardPosts({Key? key, required this.data, required this.isDisableComment, required this.isDisableSubAction}) : super(key: key);
+  const CardPosts(
+      {Key? key,
+      required this.data,
+      required this.isDisableComment,
+      required this.isDisableSubAction})
+      : super(key: key);
 
   final data;
   final bool isDisableComment;
@@ -48,39 +53,51 @@ class CardPosts extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(data.urlAvatarSubreddit),
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: const Size(50, 30),
-                          alignment: Alignment.centerLeft,
-                      ),
-                      onPressed: !isDisableSubAction ? () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => SubredditPage(idSub: data.subredditNamePrefixed,)));
-                      } : null,
-                      child: Text(data.subredditNamePrefixed),
-                    ),
-                    Text(
-                        'Posted by u/${data.author}',
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: CircleAvatar(
+                  child: (data.urlAvatarSubreddit != null &&
+                          data.urlAvatarSubreddit != '')
+                      ? Image.network(data.urlAvatarSubreddit)
+                      : const Text(
+                          "?",
+                          style: TextStyle(color: Colors.white),
                         ),
-                    ),
-                  ],
                 ),
-              ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(50, 30),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    onPressed: !isDisableSubAction
+                        ? () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => SubredditPage(
+                                          idSub: data.subredditNamePrefixed,
+                                        )));
+                          }
+                        : null,
+                    child: Text(data.subredditNamePrefixed),
+                  ),
+                  Text(
+                    'Posted by u/${data.author}',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -99,11 +116,15 @@ class CardPosts extends StatelessWidget {
                   ),
                   label: Text(data.numComments.toString()),
                 ),
-                onTap: !isDisableComment ? () {
-                  //Prints the label of each tapped chip
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => Posts(data: data)));
-                } : null,
+                onTap: !isDisableComment
+                    ? () {
+                        //Prints the label of each tapped chip
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => Posts(data: data)));
+                      }
+                    : null,
               ),
               Expanded(
                 child: TextButton(onPressed: () {}, child: const Text("like")),
