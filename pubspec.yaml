@@ -36,9 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   webview_flutter: ^2.1.1
   http: ^0.13.4
-  localstorage: ^3.0.0
-  flutter_html: ^0.8.2
-  html_unescape: ^1.0.2
+  localstorage: ^4.0.0+1
+  flutter_html: ^2.1.5
+  html_unescape: ^2.0.0
+  settings_ui: ^1.0.0
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   flutter_test:

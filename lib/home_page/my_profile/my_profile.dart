@@ -22,10 +22,6 @@ class _MyProfile extends State<MyProfile> {
     futureUser = fetchUser();
   }
 
-  Widget createTabBar() {
-    return buildContainerTabBar();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +77,7 @@ class _MyProfile extends State<MyProfile> {
                                   MaterialPageRoute(
                                       builder: (_) => const SettingsProfile()));
                             },
-                            child: const Text('Modifier le profil'),
+                            child: const Text('Edit profile'),
                           ),
                         ],
                       ),
@@ -159,8 +155,6 @@ class _MyProfile extends State<MyProfile> {
 
 Widget buildImage(imagePath) {
   final image = NetworkImage(imagePath);
-
-  print(imagePath);
 
   return ClipOval(
     child: Material(
@@ -260,8 +254,3 @@ Widget buildKarmaCoin(karma, coins, friends) => Padding(
       ),
     );
 
-Widget buildContainerTabBar() => Container(
-      color: Colors.black,
-      height: 2,
-      width: 55,
-    );

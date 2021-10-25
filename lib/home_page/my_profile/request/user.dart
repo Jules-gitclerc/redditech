@@ -24,6 +24,10 @@ class User {
   final int coins;
   final int karma;
   final int numberFriend;
+  final bool autoplay;
+  final bool acceptFollowers;
+  final bool showMedia;
+  final bool showPresence;
 
   User({
     required this.displayName,
@@ -33,6 +37,10 @@ class User {
     required this.karma,
     required this.numberFriend,
     required this.description,
+    required this.autoplay,
+    required this.acceptFollowers,
+    required this.showMedia,
+    required this.showPresence,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -47,6 +55,10 @@ class User {
       karma: json['total_karma'],
       numberFriend: json['num_friends'],
       description: data['public_description'],
+      autoplay: json['pref_autoplay'],
+      acceptFollowers: json['accept_followers'],
+      showMedia: data['show_media'],
+      showPresence: json['pref_show_presence'],
     );
   }
 }

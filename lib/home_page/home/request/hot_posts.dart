@@ -2,7 +2,7 @@ class HotPosts {
   final String title;
   final String subreddit;
   final String selfText;
-  final String selfTextHtml;
+  final void selfTextHtml;
   final String subredditNamePrefixed;
   final String urlSubredditToPost;
   final int numComments;
