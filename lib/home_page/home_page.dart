@@ -84,7 +84,7 @@ class MyHomePageState extends State<MyHomePage> {
             title: const Text("Home", style: TextStyle(color: Colors.white)),
           ),
           BottomNavigationBarItem(
-            icon: Icon((selectedIndex == 1 ? Icons.search : Icons.search_outlined), color: Colors.white),
+            icon: Icon((selectedIndex == 1 ? Icons.saved_search : Icons.search), color: Colors.white),
             title: const Text("Search", style: TextStyle(color: Colors.white)),
           ),
           BottomNavigationBarItem(
