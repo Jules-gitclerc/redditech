@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CardPosts extends StatelessWidget {
   const CardPosts(
@@ -70,29 +71,42 @@ class CardPosts extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: const Size(50, 30),
-                      alignment: Alignment.centerLeft,
+                  SizedBox(
+                    height: 20.0,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        alignment: Alignment.topLeft,
+                      ),
+                      onPressed: !isDisableSubAction
+                          ? () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => SubredditPage(
+                                            idSub: data.subredditNamePrefixed,
+                                          )));
+                            }
+                          : null,
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(data.subredditNamePrefixed,
+                            style: const TextStyle(height: 1.0)),
+                      ),
                     ),
-                    onPressed: !isDisableSubAction
-                        ? () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => SubredditPage(
-                                          idSub: data.subredditNamePrefixed,
-                                        )));
-                          }
-                        : null,
-                    child: Text(data.subredditNamePrefixed),
                   ),
-                  Text(
-                    'Posted by u/${data.author}',
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey,
+                  SizedBox(
+                    height: 10.0,
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Posted by u/${data.author}',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey,
+                          height: 1.0,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -127,12 +141,19 @@ class CardPosts extends StatelessWidget {
                     : null,
               ),
               Expanded(
-                child: TextButton(onPressed: () {}, child: const Text("like")),
-              ),
+                  child: IconButton(
+                iconSize: 20,
+                tooltip: 'like',
+                icon: const FaIcon(FontAwesomeIcons.thumbsUp),
+                onPressed: () {},
+              )),
               Expanded(
-                child:
-                    TextButton(onPressed: () {}, child: const Text("dislike")),
-              ),
+                  child: IconButton(
+                iconSize: 20,
+                tooltip: 'dislike',
+                icon: const FaIcon(FontAwesomeIcons.thumbsDown),
+                onPressed: () {},
+              )),
             ],
           )
         ],
