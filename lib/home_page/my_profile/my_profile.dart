@@ -156,8 +156,6 @@ class _MyProfile extends State<MyProfile> {
 Widget buildImage(imagePath) {
   final image = NetworkImage(imagePath);
 
-  print(imagePath);
-
   return ClipOval(
     child: Material(
       color: Colors.transparent,

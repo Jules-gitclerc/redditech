@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPage();
 }
 
-class _LoginPage extends State<LoginPage> {
+class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   static const String clientId = 'SjUvT9xx-DqV9ig65JTCmA';
   static const String clientSecret = 'ra2dL8KdqufMIiPXfRnMnHeVk0NJCw';
   static const String scope = 'identity+read';
@@ -26,11 +26,11 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   void initState() {
-    super.initState();
     // Enable hybrid composition.
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
     }
+    super.initState();
   }
 
   Future<void> requestToken(String url) async {
@@ -76,30 +76,57 @@ class _LoginPage extends State<LoginPage> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          elevation: 0,
-          title: const Text(
-            "Reddicted",
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        elevation: 0,
+        title: const Text(
+          "Login",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
       ),
-      body: Column(
+      body: Center(
+          child: Padding(
+        padding:
+            EdgeInsets.only(top: MediaQuery.of(context).size.height / 2 - 380),
+        child: Column(
           children: [
-            const Text("mettre le logo"),
-            OutlinedButton(
-              onPressed: () {
-                setState(() {
-                  isOnApi = true;
-                });
-              },
-              child: const Text('Login on reddit'),
+            Container(
+              width: 350.0,
+              height: 350.0,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('images/Redditech.png'),
+                    fit: BoxFit.fill),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width - 100,
+              height: 60.0,
+              child: OutlinedButton(
+                onPressed: () {
+                  setState(() {
+                    isOnApi = true;
+                  });
+                },
+                style: OutlinedButton.styleFrom(
+                    primary: Colors.black,
+                    backgroundColor: Colors.white,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50))),
+                    side: const BorderSide(width: 1.0, color: Colors.black)),
+                child: const Text('Login on reddit',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              ),
             ),
           ],
         ),
+      )),
     );
   }
 }
