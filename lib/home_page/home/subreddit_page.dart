@@ -1,5 +1,8 @@
+import 'package:bsflutter/home_page/home/Widget/posts_subreddit.dart';
 import 'package:bsflutter/home_page/home/request/subreddit.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:http/http.dart';
 
 class SubredditPage extends StatefulWidget {
   const SubredditPage({Key? key, required this.idSub}) : super(key: key);
@@ -35,13 +38,29 @@ class _SubredditPage extends State<SubredditPage> {
   }
 
   Future onSubPressed() async {
+    final LocalStorage storage = LocalStorage('user');
     setState(() {
       isSubLoading = true;
     });
-    data = await fetchSubreddit(widget.idSub);
+    final response = await post(
+        Uri.parse(
+            'https://oauth.reddit.com/api/subscribe?sr_name=${data.name}&action=${data.isSubscriber ? 'unsub' : 'sub'}'),
+        headers: {'authorization': 'Bearer ${storage.getItem('token')}'});
+    if (response.statusCode == 200) {
+      data = await fetchSubreddit(widget.idSub);
+    } else {
+      print("error: /subscribe?sr_name=${data.name}&action=${data.isSubscriber ? 'unsub' : 'sub'}");
+    }
     setState(() {
       isSubLoading = false;
     });
+  }
+
+  Widget getTabBody() {
+    if (selected == false) {
+      return const PostsSubreddit();
+    }
+    return const Text("a propos");
   }
 
   @override
@@ -253,6 +272,7 @@ class _SubredditPage extends State<SubredditPage> {
                 ],
               ),
             ),
+            //getTabBody(),
           ],
         ),
       ),

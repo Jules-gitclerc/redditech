@@ -18,7 +18,7 @@ class _Posts extends State<Posts> {
     return Scaffold(
         appBar: AppBar(
             iconTheme: const IconThemeData(
-              color: Colors.black, //change your color here
+              color: Colors.black,
             ),
             elevation: 0,
             title: const Text(

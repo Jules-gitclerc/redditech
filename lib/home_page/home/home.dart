@@ -21,7 +21,6 @@ class _Home extends State<Home> {
   String dropdownValue = '/hot';
   String after = '';
   bool isLoading = true;
-  bool isError = false;
 
   @override
   void initState() {
@@ -32,7 +31,8 @@ class _Home extends State<Home> {
   Future loadDataPosts(limit) async {
     final LocalStorage storage = LocalStorage('user');
     final response = await get(
-        Uri.parse('https://oauth.reddit.com$dropdownValue?limit=$limit&g=GLOBAL&sr_detail=true&after=$after&row_json=1'),
+        Uri.parse(
+            'https://oauth.reddit.com$dropdownValue?limit=$limit&g=GLOBAL&sr_detail=true&after=$after&row_json=1'),
         headers: {'authorization': 'Bearer ${storage.getItem('token')}'});
     List<HotPosts> list;
 
@@ -52,7 +52,6 @@ class _Home extends State<Home> {
       debugPrint('/subreddits/popular?limit=$limit: ${response.statusCode}');
       setState(() {
         isLoading = false;
-        isError = true;
       });
     }
   }
@@ -66,7 +65,8 @@ class _Home extends State<Home> {
             padding: const EdgeInsets.all(10),
             child: InputDecorator(
               decoration: InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
                 contentPadding: const EdgeInsets.all(10),
               ),
               child: DropdownButtonHideUnderline(
@@ -108,7 +108,7 @@ class _Home extends State<Home> {
                       isLoading = true;
                     });
                     hotPosts.removeAt(0);
-                    loadDataPosts(5);
+                    loadDataPosts(10);
                   },
                 ),
               ),
@@ -121,7 +121,10 @@ class _Home extends State<Home> {
                   shrinkWrap: true,
                   itemCount: hotPosts.length,
                   itemBuilder: (context, index) {
-                    return CardPosts(data: hotPosts[index], isDisableComment: false, isDisableSubAction: false);
+                    return CardPosts(
+                        data: hotPosts[index],
+                        isDisableComment: false,
+                        isDisableSubAction: false);
                   },
                 ),
                 onNotification: (ScrollNotification scrollInfo) {
