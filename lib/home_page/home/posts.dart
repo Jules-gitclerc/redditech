@@ -1,5 +1,4 @@
 import 'package:bsflutter/home_page/home/Widget/card_post.dart';
-import 'package:bsflutter/home_page/home/request/hot_posts.dart';
 import 'package:flutter/material.dart';
 
 class Posts extends StatefulWidget {
@@ -27,17 +26,12 @@ class _Posts extends State<Posts> {
               style: TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.white,
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(
-                  Icons.logout,
-                  color: Colors.black,
-                ),
-                tooltip: 'Disconnect',
-                onPressed: () {},
-              )
-            ]),
-        body: CardPosts(data: widget.data),
+        ),
+        body: Column(
+          children: [
+            CardPosts(data: widget.data, isDisableComment: true, isDisableSubAction: false),
+          ],
+        ),
     );
   }
 }

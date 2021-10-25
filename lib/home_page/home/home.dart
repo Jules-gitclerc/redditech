@@ -32,7 +32,7 @@ class _Home extends State<Home> {
   Future loadDataPosts(limit) async {
     final LocalStorage storage = LocalStorage('user');
     final response = await get(
-        Uri.parse('https://oauth.reddit.com$dropdownValue?limit=$limit&g=GLOBAL&sr_detail=true&after=$after'),
+        Uri.parse('https://oauth.reddit.com$dropdownValue?limit=$limit&g=GLOBAL&sr_detail=true&after=$after&row_json=1'),
         headers: {'authorization': 'Bearer ${storage.getItem('token')}'});
     List<HotPosts> list;
 
@@ -47,7 +47,6 @@ class _Home extends State<Home> {
         hotPosts.addAll(list);
         after = rest['after'];
       });
-      print(after);
       return;
     } else {
       debugPrint('/subreddits/popular?limit=$limit: ${response.statusCode}');
@@ -122,7 +121,7 @@ class _Home extends State<Home> {
                   shrinkWrap: true,
                   itemCount: hotPosts.length,
                   itemBuilder: (context, index) {
-                    return CardPosts(data: hotPosts[index]);
+                    return CardPosts(data: hotPosts[index], isDisableComment: false, isDisableSubAction: false);
                   },
                 ),
                 onNotification: (ScrollNotification scrollInfo) {
