@@ -36,7 +36,7 @@ class _PostsSubreddit extends State<PostsSubreddit> {
     final LocalStorage storage = LocalStorage('user');
     final response = await get(
         Uri.parse(
-            'https://oauth.reddit.com/${widget.idSub}/hot?limit=$limit&g=GLOBAL&sr_detail=true&after=$after&row_json=1'),
+            'https://oauth.reddit.com/${widget.idSub}$dropdownValue?limit=$limit&g=GLOBAL&sr_detail=true&after=$after&row_json=1'),
         headers: {'authorization': 'Bearer ${storage.getItem('token')}'});
     List<HotPosts> list;
 
