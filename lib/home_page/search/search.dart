@@ -77,6 +77,9 @@ class _Search extends State<Search> {
                 hoverColor: Colors.black,
                 focusColor: Colors.black,
                 fillColor: Colors.black,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
                 focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                 ),

@@ -20,6 +20,7 @@ class User {
   final String displayName;
   final String avatarUrl;
   final String idUser;
+  final String bannerImg;
   final String description;
   final int coins;
   final int karma;
@@ -43,13 +44,16 @@ class User {
     required this.showMedia,
     required this.showPresence,
     required this.nsfw,
+    required this.bannerImg,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     var data = json['subreddit'];
     var avatar = json['icon_img'].replaceAll("amp;", "");
+    var banner = data['banner_img'].replaceAll("amp;", "");
 
     return User(
+      bannerImg: banner,
       displayName: json['name'],
       avatarUrl: avatar,
       idUser: json['id'],

@@ -34,12 +34,43 @@ class _MyProfile extends State<MyProfile> {
               return Center(
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: buildImage(snapshot.data!.avatarUrl),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          height: 150,
+                          color: Colors.grey,
+                          child: ((snapshot.data!.bannerImg != null && snapshot.data!.bannerImg != '')
+                              ? Image.network(
+                            snapshot.data!.bannerImg,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            height: 150,
+                          )
+                              : Container(
+                            height: 150,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                            ),
+                          )),
+                        ),
+                        Positioned(
+                            top: 150 - 60,
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundColor: Colors.white,
+                              child: CircleAvatar(
+                                  radius: 55,
+                                  backgroundColor: Colors.grey.shade800,
+                                  backgroundImage: NetworkImage(
+                                    snapshot.data!.avatarUrl,
+                                  )),
+                            ))
+                      ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 60),
                       child: buildName(snapshot.data!.displayName),
                     ),
                     Padding(
