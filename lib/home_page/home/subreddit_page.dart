@@ -58,7 +58,7 @@ class _SubredditPage extends State<SubredditPage> {
 
   Widget getTabBody() {
     if (selected == false) {
-      return const PostsSubreddit();
+      return PostsSubreddit(idSub: widget.idSub);
     }
     return const Text("a propos");
   }
@@ -272,7 +272,7 @@ class _SubredditPage extends State<SubredditPage> {
                 ],
               ),
             ),
-            //getTabBody(),
+            getTabBody(),
           ],
         ),
       ),
