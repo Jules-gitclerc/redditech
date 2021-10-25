@@ -28,6 +28,7 @@ class User {
   final bool acceptFollowers;
   final bool showMedia;
   final bool showPresence;
+  final bool nsfw;
 
   User({
     required this.displayName,
@@ -41,6 +42,7 @@ class User {
     required this.acceptFollowers,
     required this.showMedia,
     required this.showPresence,
+    required this.nsfw,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -55,10 +57,11 @@ class User {
       karma: json['total_karma'],
       numberFriend: json['num_friends'],
       description: data['public_description'],
-      autoplay: json['pref_autoplay'],
+      autoplay: json['pref_video_autoplay'],
       acceptFollowers: json['accept_followers'],
       showMedia: data['show_media'],
       showPresence: json['pref_show_presence'],
+      nsfw: json['over_18'],
     );
   }
 }
