@@ -15,14 +15,17 @@ class Video extends StatefulWidget {
 
 class _Video extends State<Video> {
   late VideoPlayerController _videoPlayerController;
+  bool isPlay = false;
 
   @override
   void initState() {
     super.initState();
     _videoPlayerController = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
-        setState(() {});
-        _videoPlayerController.pause();
+        setState(() {
+          _videoPlayerController.pause();
+          isPlay = false;
+        });
       });
   }
 
@@ -48,22 +51,35 @@ class _Video extends State<Video> {
                   child: CircularProgressIndicator(),
                 ),
               ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  _videoPlayerController.pause();
-                },
-                child: const Icon(Icons.pause)),
-            const Padding(padding: EdgeInsets.all(2)),
-            ElevatedButton(
-                onPressed: () {
-                  _videoPlayerController.play();
-                },
-                child: const Icon(Icons.play_arrow))
-          ],
-        )
+        Container(
+          height: 30,
+          decoration: const BoxDecoration(
+            color: Colors.grey,
+          ),
+          child: Row(
+            children: [
+              IconButton(
+                  iconSize: 20,
+                  onPressed: () {
+                    if (isPlay) {
+                      _videoPlayerController.pause();
+                      setState(() {
+                        isPlay = false;
+                      });
+                    } else {
+                      _videoPlayerController.play();
+                      setState(() {
+                        isPlay = true;
+                      });
+                    }
+                  },
+                  icon: Icon(
+                    isPlay ? Icons.pause : Icons.play_arrow,
+                    color: Colors.white,
+                  )),
+            ],
+          ),
+        ),
       ],
     );
   }

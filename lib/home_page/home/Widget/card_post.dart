@@ -138,7 +138,6 @@ class CardPosts extends StatelessWidget {
                 ),
                 onTap: !isDisableComment
                     ? () {
-                        //Prints the label of each tapped chip
                         Navigator.push(
                             context,
                             MaterialPageRoute(
