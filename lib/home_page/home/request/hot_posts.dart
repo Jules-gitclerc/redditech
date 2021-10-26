@@ -45,12 +45,12 @@ class HotPosts {
           listUrlImageConstructorTmp.add(element.replaceAll("amp;", ""));
         }
       }
-      if (data['preview']['videos'] != null) {
-        data['preview']['videos'].forEach(
-            (item) => listUrlVideoConstructor.add(item['source']['url']));
-        for (var element in listUrlVideoConstructor) {
-          listUrlVideoConstructorTmp.add(element.replaceAll("amp;", ""));
-        }
+    }
+
+    if (data['secure_media'] != null) {
+      if (data['secure_media']['reddit_video'] != null) {
+        listUrlVideoConstructor.add(
+            data['secure_media']['reddit_video']['fallback_url']);
       }
     }
 

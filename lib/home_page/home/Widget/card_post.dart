@@ -1,3 +1,4 @@
+import 'package:bsflutter/home_page/home/Widget/video.dart';
 import 'package:bsflutter/home_page/home/posts.dart';
 import 'package:bsflutter/home_page/home/subreddit_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,14 +20,19 @@ class CardPosts extends StatelessWidget {
   final bool isDisableSubAction;
 
   List<Widget> _getImage(elem) {
-    // type 'List<Widget>' is not a subtype of type 'Widget'
-    return elem
+    if (data.listUrlVideo.length == 0) {
+      return elem
         .map<Widget>((i) => Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Image(
-                image: NetworkImage(i),
-              ),
+              child: Image.network(i)
             ))
+        .toList();
+    }
+    return data.listUrlVideo
+        .map<Widget>((i) => Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Video(url: i),
+    ))
         .toList();
   }
 
