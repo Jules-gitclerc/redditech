@@ -6,17 +6,19 @@ class HotPosts {
   final String subredditNamePrefixed;
   final String urlSubredditToPost;
   final int numComments;
+  final int score;
   final String permalink;
   final String id;
   final String author;
   final bool isSaved;
-  final String likes;
+  final int likes;
   late final String urlAvatarSubreddit;
   final List<dynamic> listUrlImage;
   final List<dynamic> listUrlVideo;
 
   HotPosts({
     required this.title,
+    required this.score,
     required this.subreddit,
     required this.selfText,
     required this.selfTextHtml,
@@ -38,10 +40,18 @@ class HotPosts {
     var listUrlImageConstructor = [];
     var listUrlImageConstructorTmp = [];
     var listUrlVideoConstructor = [];
-    var listUrlVideoConstructorTmp = [];
     var listGallery = [];
     var galleryData = [];
     var urlLogoSub = '';
+    int luke = 0;
+
+    if (data['likes'] != null) {
+      if (data['likes'] == true) {
+        luke = 1;
+      } else {
+        luke = -1;
+      }
+    }
 
     if (data['preview'] != null) {
       if (data['preview']['images'] != null) {
@@ -79,7 +89,8 @@ class HotPosts {
     }
 
     return HotPosts(
-      id: data['id'],
+      score: data['score'],
+      id: data['name'],
       title: data['title'],
       subreddit: data['subreddit'],
       selfText: data['selftext'],
@@ -92,7 +103,7 @@ class HotPosts {
       listUrlImage: listUrlImageConstructorTmp,
       listUrlVideo: listUrlVideoConstructor,
       urlAvatarSubreddit: urlLogoSub,
-      likes: data['likes'],
+      likes: luke,
       isSaved: data['saved'],
     );
   }
