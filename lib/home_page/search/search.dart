@@ -61,66 +61,74 @@ class _Search extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              cursorColor: Colors.black,
-              onChanged: (String value) {
-                setState(() {
-                  searchValue = value;
-                });
-                loadSearch();
-              },
-              decoration: const InputDecoration(
-                hoverColor: Colors.black,
-                focusColor: Colors.black,
-                fillColor: Colors.black,
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                cursorColor: Colors.black,
+                onChanged: (String value) {
+                  setState(() {
+                    searchValue = value;
+                  });
+                  loadSearch();
+                },
+                decoration: const InputDecoration(
+                  hoverColor: Colors.black,
+                  focusColor: Colors.black,
+                  fillColor: Colors.black,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
+                  ),
+                  labelText: 'Search',
+                  labelStyle: TextStyle(color: Colors.black),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
                 ),
-                labelText: 'Search',
-                labelStyle: TextStyle(color: Colors.black),
-                prefixIcon: Icon(Icons.search, color: Colors.black,),
               ),
             ),
-          ),
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: sub.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  child:
-                      ((sub[index].imgIcon != null && sub[index].imgIcon != '')
-                          ? Image.network(sub[index].imgIcon)
-                          : const Text(
-                              "?",
-                              style: TextStyle(color: Colors.white),
-                            )),
-                ),
-                title: Text(sub[index].name),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => SubredditPage(idSub: 'r/${sub[index].name}')));
-                },
-              );
-            },
-          ),
-          Container(
-            height: isLoading ? 50.0 : 0,
-            color: Colors.transparent,
-            child: const Center(
-              child: CircularProgressIndicator(),
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: sub.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    child: ((sub[index].imgIcon != null &&
+                            sub[index].imgIcon != '')
+                        ? Image.network(sub[index].imgIcon)
+                        : const Text(
+                            "?",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                  ),
+                  title: Text(sub[index].name),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                SubredditPage(idSub: 'r/${sub[index].name}')));
+                  },
+                );
+              },
             ),
-          ),
-        ],
+            Container(
+              height: isLoading ? 50.0 : 0,
+              color: Colors.transparent,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

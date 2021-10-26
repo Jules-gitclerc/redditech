@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> {
   static const String clientId = 'SjUvT9xx-DqV9ig65JTCmA';
   static const String clientSecret = 'ra2dL8KdqufMIiPXfRnMnHeVk0NJCw';
-  static const String scope = 'identity+read+account+mysubreddits+subscribe';
+  static const String scope = 'identity+read+account+mysubreddits+subscribe+vote';
   final LocalStorage storage = LocalStorage('user');
 
   bool isOnApi = false;

@@ -16,22 +16,27 @@ class _Posts extends State<Posts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            iconTheme: const IconThemeData(
-              color: Colors.black,
-            ),
-            elevation: 0,
-            title: const Text(
-              "Reddictek",
-              style: TextStyle(color: Colors.black),
-            ),
-            backgroundColor: Colors.white,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.black,
         ),
-        body: Column(
+        elevation: 0,
+        title: Text(
+          widget.data.subredditNamePrefixed,
+          style: const TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            CardPosts(data: widget.data, isDisableComment: true, isDisableSubAction: false),
+            CardPosts(
+                data: widget.data,
+                isDisableComment: true,
+                isDisableSubAction: false),
           ],
         ),
+      ),
     );
   }
 }

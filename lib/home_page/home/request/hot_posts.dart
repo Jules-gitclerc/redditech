@@ -7,7 +7,10 @@ class HotPosts {
   final String urlSubredditToPost;
   final int numComments;
   final String permalink;
+  final String id;
   final String author;
+  final bool isSaved;
+  final String likes;
   late final String urlAvatarSubreddit;
   final List<dynamic> listUrlImage;
   final List<dynamic> listUrlVideo;
@@ -25,6 +28,9 @@ class HotPosts {
     required this.listUrlImage,
     required this.listUrlVideo,
     required this.urlAvatarSubreddit,
+    required this.likes,
+    required this.id,
+    required this.isSaved,
   });
 
   factory HotPosts.fromJson(Map<String, dynamic> json) {
@@ -49,14 +55,15 @@ class HotPosts {
 
     if (data['secure_media'] != null) {
       if (data['secure_media']['reddit_video'] != null) {
-        listUrlVideoConstructor.add(
-            data['secure_media']['reddit_video']['fallback_url']);
+        listUrlVideoConstructor
+            .add(data['secure_media']['reddit_video']['fallback_url']);
       }
     }
 
     if (data['gallery_data'] != null) {
       if (data['gallery_data']['items'] != null) {
-        data['gallery_data']['items'].map((item) => galleryData.add(item.media_id));
+        data['gallery_data']['items']
+            .map((item) => galleryData.add(item.media_id));
       }
     }
 
@@ -72,6 +79,7 @@ class HotPosts {
     }
 
     return HotPosts(
+      id: data['id'],
       title: data['title'],
       subreddit: data['subreddit'],
       selfText: data['selftext'],
@@ -84,6 +92,8 @@ class HotPosts {
       listUrlImage: listUrlImageConstructorTmp,
       listUrlVideo: listUrlVideoConstructor,
       urlAvatarSubreddit: urlLogoSub,
+      likes: data['likes'],
+      isSaved: data['saved'],
     );
   }
 }
