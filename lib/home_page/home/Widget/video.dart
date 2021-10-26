@@ -1,4 +1,3 @@
-import 'package:bsflutter/home_page/home/Widget/card_post.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -23,6 +22,7 @@ class _Video extends State<Video> {
     _videoPlayerController = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
         setState(() {
+          _videoPlayerController.setLooping(true);
           _videoPlayerController.pause();
           isPlay = false;
         });
