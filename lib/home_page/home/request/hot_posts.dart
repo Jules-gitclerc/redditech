@@ -14,9 +14,11 @@ class HotPosts {
   final int likes;
   late final String urlAvatarSubreddit;
   final List<dynamic> listUrlImage;
+  final List<dynamic> listUrlGif;
   final List<dynamic> listUrlVideo;
 
   HotPosts({
+    required this.listUrlGif,
     required this.title,
     required this.score,
     required this.subreddit,
@@ -38,6 +40,7 @@ class HotPosts {
   factory HotPosts.fromJson(Map<String, dynamic> json) {
     var data = json['data'];
     var listUrlImageConstructor = [];
+    var listUrlGifConstructor = [];
     var listUrlImageConstructorTmp = [];
     var listUrlVideoConstructor = [];
     var listGallery = [];
@@ -65,8 +68,13 @@ class HotPosts {
 
     if (data['secure_media'] != null) {
       if (data['secure_media']['reddit_video'] != null) {
-        listUrlVideoConstructor
-            .add(data['secure_media']['reddit_video']['fallback_url']);
+        if (data['secure_media']['reddit_video']['is_gif'] == true) {
+          listUrlGifConstructor
+              .add(data['secure_media']['reddit_video']['fallback_url']);
+        } else {
+          listUrlVideoConstructor
+              .add(data['secure_media']['reddit_video']['fallback_url']);
+        }
       }
     }
 
@@ -101,6 +109,7 @@ class HotPosts {
       numComments: data['num_comments'],
       author: data['author'],
       listUrlImage: listUrlImageConstructorTmp,
+      listUrlGif: listUrlGifConstructor,
       listUrlVideo: listUrlVideoConstructor,
       urlAvatarSubreddit: urlLogoSub,
       likes: luke,

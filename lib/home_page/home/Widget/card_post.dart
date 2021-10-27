@@ -46,6 +46,11 @@ class _CardPosts extends State<CardPosts> {
           .map<Widget>((i) => Padding(
               padding: const EdgeInsets.all(10.0), child: Image.network(i)))
           .toList();
+    } else if (widget.data.listUrlGif.length != 0) {
+      return widget.data.listUrlGif
+          .map<Widget>((i) => Padding(
+          padding: const EdgeInsets.all(10.0), child: Image.network(i)))
+          .toList();
     }
     return widget.data.listUrlVideo
         .map<Widget>((i) => Padding(
