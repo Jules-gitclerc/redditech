@@ -6,14 +6,21 @@ class HotPosts {
   final String subredditNamePrefixed;
   final String urlSubredditToPost;
   final int numComments;
+  final int score;
   final String permalink;
+  final String id;
   final String author;
+  final bool isSaved;
+  final int likes;
   late final String urlAvatarSubreddit;
   final List<dynamic> listUrlImage;
+  final List<dynamic> listUrlGif;
   final List<dynamic> listUrlVideo;
 
   HotPosts({
+    required this.listUrlGif,
     required this.title,
+    required this.score,
     required this.subreddit,
     required this.selfText,
     required this.selfTextHtml,
@@ -25,17 +32,29 @@ class HotPosts {
     required this.listUrlImage,
     required this.listUrlVideo,
     required this.urlAvatarSubreddit,
+    required this.likes,
+    required this.id,
+    required this.isSaved,
   });
 
   factory HotPosts.fromJson(Map<String, dynamic> json) {
     var data = json['data'];
     var listUrlImageConstructor = [];
+    var listUrlGifConstructor = [];
     var listUrlImageConstructorTmp = [];
     var listUrlVideoConstructor = [];
-    var listUrlVideoConstructorTmp = [];
     var listGallery = [];
     var galleryData = [];
     var urlLogoSub = '';
+    int luke = 0;
+
+    if (data['likes'] != null) {
+      if (data['likes'] == true) {
+        luke = 1;
+      } else {
+        luke = -1;
+      }
+    }
 
     if (data['preview'] != null) {
       if (data['preview']['images'] != null) {
@@ -49,14 +68,20 @@ class HotPosts {
 
     if (data['secure_media'] != null) {
       if (data['secure_media']['reddit_video'] != null) {
-        listUrlVideoConstructor.add(
-            data['secure_media']['reddit_video']['fallback_url']);
+        if (data['secure_media']['reddit_video']['is_gif'] == true) {
+          listUrlGifConstructor
+              .add(data['secure_media']['reddit_video']['fallback_url']);
+        } else {
+          listUrlVideoConstructor
+              .add(data['secure_media']['reddit_video']['fallback_url']);
+        }
       }
     }
 
     if (data['gallery_data'] != null) {
       if (data['gallery_data']['items'] != null) {
-        data['gallery_data']['items'].map((item) => galleryData.add(item.media_id));
+        data['gallery_data']['items']
+            .map((item) => galleryData.add(item.media_id));
       }
     }
 
@@ -72,6 +97,8 @@ class HotPosts {
     }
 
     return HotPosts(
+      score: data['score'],
+      id: data['name'],
       title: data['title'],
       subreddit: data['subreddit'],
       selfText: data['selftext'],
@@ -82,8 +109,11 @@ class HotPosts {
       numComments: data['num_comments'],
       author: data['author'],
       listUrlImage: listUrlImageConstructorTmp,
+      listUrlGif: listUrlGifConstructor,
       listUrlVideo: listUrlVideoConstructor,
       urlAvatarSubreddit: urlLogoSub,
+      likes: luke,
+      isSaved: data['saved'],
     );
   }
 }
