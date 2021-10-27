@@ -1,3 +1,4 @@
+import 'package:bsflutter/home_page/home/Widget/gallery.dart';
 import 'package:bsflutter/home_page/home/Widget/video.dart';
 import 'package:bsflutter/home_page/home/posts.dart';
 import 'package:bsflutter/home_page/home/subreddit_page.dart';
@@ -40,7 +41,15 @@ class _CardPosts extends State<CardPosts> {
     totalVote = widget.data.score;
   }
 
+  Widget _getGallery() {
+    if (widget.data.listUrlGallery.isNotEmpty) {
+      return Gallery(data: widget.data.listUrlGallery);
+    }
+    return Container();
+  }
+
   List<Widget> _getImage(elem) {
+
     if (widget.data.listUrlVideo.length == 0) {
       return elem
           .map<Widget>((i) => Padding(
@@ -200,6 +209,7 @@ class _CardPosts extends State<CardPosts> {
           ),
           _getSelfText(),
           ..._getImage(widget.data.listUrlImage),
+          _getGallery(),
           Row(
             children: [
               Expanded(

@@ -16,6 +16,7 @@ class HotPosts {
   final List<dynamic> listUrlImage;
   final List<dynamic> listUrlGif;
   final List<dynamic> listUrlVideo;
+  final List<dynamic> listUrlGallery;
 
   HotPosts({
     required this.listUrlGif,
@@ -35,6 +36,7 @@ class HotPosts {
     required this.likes,
     required this.id,
     required this.isSaved,
+    required this.listUrlGallery,
   });
 
   factory HotPosts.fromJson(Map<String, dynamic> json) {
@@ -97,6 +99,7 @@ class HotPosts {
     }
 
     return HotPosts(
+      listUrlGallery: listGallery,
       score: data['score'],
       id: data['name'],
       title: data['title'],
