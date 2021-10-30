@@ -135,9 +135,7 @@ class _CardPosts extends State<CardPosts> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -281,9 +279,11 @@ class _CardPosts extends State<CardPosts> {
                         color: Colors.yellow)),
               ),
             ],
+          ),
+          const Divider(
+            thickness: 5,
           )
         ],
-      ),
     );
   }
 }
