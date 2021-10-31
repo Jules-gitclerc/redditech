@@ -42,6 +42,7 @@ dependencies:
   settings_ui: ^1.0.0
   font_awesome_flutter: ^9.2.0
   video_player: 2.1.15
+  path_provider: ^2.0.2
 
 dev_dependencies:
   flutter_test:

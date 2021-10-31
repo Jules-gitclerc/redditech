@@ -17,10 +17,18 @@ class SettingsProfile extends StatefulWidget {
 
 class _SettingsProfile extends State<SettingsProfile> {
   bool isLoading = false;
-  bool nsfw = false;
   bool acceptFollowers = false;
   bool showPresence = true;
   bool isSwitched_5 = true;
+  bool autoplay = true;
+  bool adultContent = true;
+  bool beta = false;
+  bool contentVisibility = true;
+  bool emailRequest = true;
+  bool emailComments = true;
+  bool emailUpvotePost = true;
+  bool emailPrivateMessage = true;
+  bool emailUserMention = true;
 
   @override
   void initState() {
@@ -39,11 +47,18 @@ class _SettingsProfile extends State<SettingsProfile> {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-
       setState(() {
-        nsfw = data['over_18'];
         acceptFollowers = data['enable_followers'];
         showPresence = data['show_presence'];
+        autoplay = data['video_autoplay'];
+        adultContent = data['over_18'];
+        beta = data['beta'];
+        contentVisibility = data['profile_opt_out'];
+        emailRequest = data['email_chat_request'];
+        emailComments = data['email_comment_reply'];
+        emailUpvotePost = data['email_upvote_post'];
+        emailPrivateMessage = data['email_private_message'];
+        emailUserMention = data['email_username_mention'];
       });
     } else {
       debugPrint('/api/v1/me: ${response.statusCode}');
@@ -53,21 +68,28 @@ class _SettingsProfile extends State<SettingsProfile> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     Future patchSettings() async {
       setState(() {
         isLoading = true;
       });
       final LocalStorage storage = LocalStorage('user');
       var body = jsonEncode({
-        'over_18': nsfw,
         'enable_followers': acceptFollowers,
-        'show_presence' : showPresence,
+        'show_presence': showPresence,
+        'video_autoplay': autoplay,
+        'over_18': adultContent,
+        'beta': beta,
+        'profile_opt_out' : contentVisibility,
+        'email_chat_request' : emailRequest,
+        'email_comment_reply' : emailComments,
+        'email_upvote_post' : emailUpvotePost,
+        'email_private_message' : emailPrivateMessage,
+        'email_username_mention' : emailUserMention,
       });
+      print(body);
+      //return;
       final response = await patch(
           Uri.parse('https://oauth.reddit.com/api/v1/me/prefs'),
           body: body,
@@ -126,22 +148,6 @@ class _SettingsProfile extends State<SettingsProfile> {
         child: SettingsList(
           sections: [
             SettingsSection(
-              title: 'Profile Category',
-              tiles: [
-                SettingsTile.switchTile(
-                  title: 'NSFW',
-                  switchActiveColor: Colors.indigo,
-                  leading: const FaIcon(FontAwesomeIcons.eye),
-                  switchValue: nsfw,
-                  onToggle: (value) {
-                    setState(() {
-                      nsfw = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-            SettingsSection(
               title: 'Advanced',
               tiles: [
                 SettingsTile.switchTile(
@@ -152,6 +158,17 @@ class _SettingsProfile extends State<SettingsProfile> {
                   onToggle: (value) {
                     setState(() {
                       acceptFollowers = value;
+                    });
+                  },
+                ),
+                SettingsTile.switchTile(
+                  title: 'Content visibility',
+                  switchActiveColor: Colors.indigo,
+                  leading: const FaIcon(FontAwesomeIcons.userShield),
+                  switchValue: contentVisibility,
+                  onToggle: (value) {
+                    setState(() {
+                      contentVisibility = value;
                     });
                   },
                 ),
@@ -175,10 +192,10 @@ class _SettingsProfile extends State<SettingsProfile> {
                   title: 'Autoplay media',
                   switchActiveColor: Colors.indigo,
                   leading: const FaIcon(FontAwesomeIcons.playCircle),
-                  switchValue: isSwitched_5,
+                  switchValue: autoplay,
                   onToggle: (value) {
                     setState(() {
-                      isSwitched_5 = value;
+                      autoplay = value;
                     });
                   },
                 ),
@@ -186,32 +203,86 @@ class _SettingsProfile extends State<SettingsProfile> {
                   title: 'Adult content',
                   switchActiveColor: Colors.indigo,
                   leading: const FaIcon(FontAwesomeIcons.male),
-                  switchValue: isSwitched_5,
+                  switchValue: adultContent,
                   onToggle: (value) {
                     setState(() {
-                      isSwitched_5 = value;
+                      adultContent = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: 'Beta Tests',
+              tiles: [
+                SettingsTile.switchTile(
+                  title: 'Opt into beta tests',
+                  switchActiveColor: Colors.indigo,
+                  leading: const FaIcon(FontAwesomeIcons.playCircle),
+                  switchValue: beta,
+                  onToggle: (value) {
+                    setState(() {
+                      beta = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: 'Email Notifications',
+              tiles: [
+                SettingsTile.switchTile(
+                  title: 'Discussion requests',
+                  switchActiveColor: Colors.indigo,
+                  leading: const FaIcon(FontAwesomeIcons.discourse),
+                  switchValue: emailRequest,
+                  onToggle: (value) {
+                    setState(() {
+                      emailRequest = value;
                     });
                   },
                 ),
                 SettingsTile.switchTile(
-                  title: 'Reduce Animations',
+                  title: 'Answers to your comments',
                   switchActiveColor: Colors.indigo,
-                  leading: const FaIcon(FontAwesomeIcons.compressAlt),
-                  switchValue: isSwitched_5,
+                  leading: const FaIcon(FontAwesomeIcons.discourse),
+                  switchValue: emailComments,
                   onToggle: (value) {
                     setState(() {
-                      isSwitched_5 = value;
+                      emailComments = value;
                     });
                   },
                 ),
                 SettingsTile.switchTile(
-                  title: 'Community themes',
+                  title: 'Upvote Post',
                   switchActiveColor: Colors.indigo,
-                  leading: const FaIcon(FontAwesomeIcons.mobile),
-                  switchValue: isSwitched_5,
+                  leading: const FaIcon(FontAwesomeIcons.discourse),
+                  switchValue: emailUpvotePost,
                   onToggle: (value) {
                     setState(() {
-                      isSwitched_5 = value;
+                      emailUpvotePost = value;
+                    });
+                  },
+                ),
+                SettingsTile.switchTile(
+                  title: 'Mentions of your username',
+                  switchActiveColor: Colors.indigo,
+                  leading: const FaIcon(FontAwesomeIcons.discourse),
+                  switchValue: emailUserMention,
+                  onToggle: (value) {
+                    setState(() {
+                      emailUserMention = value;
+                    });
+                  },
+                ),
+                SettingsTile.switchTile(
+                  title: 'Inbox messages',
+                  switchActiveColor: Colors.indigo,
+                  leading: const FaIcon(FontAwesomeIcons.discourse),
+                  switchValue: emailPrivateMessage,
+                  onToggle: (value) {
+                    setState(() {
+                      emailPrivateMessage = value;
                     });
                   },
                 ),
