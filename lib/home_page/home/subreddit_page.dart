@@ -185,7 +185,7 @@ class _SubredditPage extends State<SubredditPage> {
           ),
           for(var item in hotPosts)
             CardPosts(
-                data: item, isDisableComment: false, isDisableSubAction: false),
+                data: item, isDisableComment: false, isDisableSubAction: true),
           Container(
             height: isLoadingPosts ? 50.0 : 0,
             color: Colors.transparent,
