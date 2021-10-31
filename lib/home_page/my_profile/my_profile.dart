@@ -1,7 +1,7 @@
-import 'package:bsflutter/home_page/my_profile/request/user.dart';
+import 'request/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:bsflutter/home_page/my_profile/settings_profile.dart';
+import 'settings_profile.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({Key? key}) : super(key: key);
@@ -41,19 +41,20 @@ class _MyProfile extends State<MyProfile> {
                         Container(
                           height: 150,
                           color: Colors.grey,
-                          child: ((snapshot.data!.bannerImg != null && snapshot.data!.bannerImg != '')
+                          child: ((snapshot.data!.bannerImg != null &&
+                                  snapshot.data!.bannerImg != '')
                               ? Image.network(
-                            snapshot.data!.bannerImg,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            height: 150,
-                          )
+                                  snapshot.data!.bannerImg,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  height: 150,
+                                )
                               : Container(
-                            height: 150,
-                            decoration: const BoxDecoration(
-                              color: Colors.grey,
-                            ),
-                          )),
+                                  height: 150,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                  ),
+                                )),
                         ),
                         Positioned(
                             top: 150 - 60,
@@ -143,7 +144,9 @@ class _MyProfile extends State<MyProfile> {
                                       ? Icons.add_comment
                                       : Icons.add_comment_outlined)),
                               Container(
-                                color: !selected ? Colors.black : Colors.transparent,
+                                color: !selected
+                                    ? Colors.black
+                                    : Colors.transparent,
                                 height: 2,
                                 width: 55,
                               ),
@@ -158,9 +161,13 @@ class _MyProfile extends State<MyProfile> {
                                       selected = !selected;
                                     });
                                   },
-                                  icon: Icon(!selected ? Icons.add_to_photos_outlined : Icons.add_to_photos)),
+                                  icon: Icon(!selected
+                                      ? Icons.add_to_photos_outlined
+                                      : Icons.add_to_photos)),
                               Container(
-                                color: !selected ? Colors.transparent : Colors.black,
+                                color: !selected
+                                    ? Colors.transparent
+                                    : Colors.black,
                                 height: 2,
                                 width: 55,
                               )
@@ -284,4 +291,3 @@ Widget buildKarmaCoin(karma, coins, friends) => Padding(
         ],
       ),
     );
-

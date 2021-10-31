@@ -1,4 +1,4 @@
-import 'package:bsflutter/home_page/home/request/hot_posts.dart';
+import '../request/hot_posts.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:localstorage/localstorage.dart';

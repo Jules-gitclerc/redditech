@@ -1,7 +1,7 @@
-import 'package:bsflutter/home_page/home/Widget/gallery.dart';
-import 'package:bsflutter/home_page/home/Widget/video.dart';
-import 'package:bsflutter/home_page/home/posts.dart';
-import 'package:bsflutter/home_page/home/subreddit_page.dart';
+import '../Widget/gallery.dart';
+import '../Widget/video.dart';
+import '../posts.dart';
+import '../subreddit_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -49,7 +49,6 @@ class _CardPosts extends State<CardPosts> {
   }
 
   List<Widget> _getImage(elem) {
-
     if (widget.data.listUrlVideo.length == 0) {
       return elem
           .map<Widget>((i) => Padding(
@@ -58,7 +57,7 @@ class _CardPosts extends State<CardPosts> {
     } else if (widget.data.listUrlGif.length != 0) {
       return widget.data.listUrlGif
           .map<Widget>((i) => Padding(
-          padding: const EdgeInsets.all(10.0), child: Image.network(i)))
+              padding: const EdgeInsets.all(10.0), child: Image.network(i)))
           .toList();
     }
     return widget.data.listUrlVideo
@@ -136,154 +135,154 @@ class _CardPosts extends State<CardPosts> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: CircleAvatar(
-                  child: (widget.data.urlAvatarSubreddit != null &&
-                          widget.data.urlAvatarSubreddit != '')
-                      ? Image.network(widget.data.urlAvatarSubreddit)
-                      : const Text(
-                          "?",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: CircleAvatar(
+                child: (widget.data.urlAvatarSubreddit != null &&
+                        widget.data.urlAvatarSubreddit != '')
+                    ? Image.network(widget.data.urlAvatarSubreddit)
+                    : const Text(
+                        "?",
+                        style: TextStyle(color: Colors.white),
+                      ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 20.0,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        alignment: Alignment.topLeft,
-                      ),
-                      onPressed: !widget.isDisableSubAction
-                          ? () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => SubredditPage(
-                                            idSub: widget
-                                                .data.subredditNamePrefixed,
-                                          )));
-                            }
-                          : null,
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(widget.data.subredditNamePrefixed,
-                            style: const TextStyle(height: 1.0)),
-                      ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: 20.0,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.topLeft,
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
+                    onPressed: !widget.isDisableSubAction
+                        ? () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => SubredditPage(
+                                          idSub:
+                                              widget.data.subredditNamePrefixed,
+                                        )));
+                          }
+                        : null,
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        'Posted by u/${widget.data.author}',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey,
-                          height: 1.0,
-                        ),
+                      child: Text(widget.data.subredditNamePrefixed,
+                          style: const TextStyle(height: 1.0)),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Posted by u/${widget.data.author}',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey,
+                        height: 1.0,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            child: Text(widget.data.title,
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          _getSelfText(),
-          ..._getImage(widget.data.listUrlImage),
-          _getGallery(),
-          Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  child: Chip(
-                    avatar: const Icon(
-                      Icons.add_comment_outlined,
-                      size: 18,
-                    ),
-                    label: Text(widget.data.numComments.toString()),
+                ),
+              ],
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: Text(widget.data.title,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        _getSelfText(),
+        ..._getImage(widget.data.listUrlImage),
+        _getGallery(),
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                child: Chip(
+                  avatar: const Icon(
+                    Icons.add_comment_outlined,
+                    size: 18,
                   ),
-                  onTap: !widget.isDisableComment
-                      ? () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => Posts(data: widget.data)));
-                        }
-                      : null,
+                  label: Text(widget.data.numComments.toString()),
+                ),
+                onTap: !widget.isDisableComment
+                    ? () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => Posts(data: widget.data)));
+                      }
+                    : null,
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(color: Colors.grey, spreadRadius: 1),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: IconButton(
+                      iconSize: 20,
+                      tooltip: 'like',
+                      icon: FaIcon(valueVote == 1
+                          ? FontAwesomeIcons.solidThumbsUp
+                          : FontAwesomeIcons.thumbsUp),
+                      onPressed: () {
+                        votePosts(1);
+                      },
+                    )),
+                    Expanded(child: Text(totalVote.toString())),
+                    Expanded(
+                        child: IconButton(
+                      iconSize: 20,
+                      tooltip: 'dislike',
+                      icon: FaIcon(valueVote == -1
+                          ? FontAwesomeIcons.solidThumbsDown
+                          : FontAwesomeIcons.thumbsDown),
+                      onPressed: () {
+                        votePosts(-1);
+                      },
+                    )),
+                  ],
                 ),
               ),
-              Expanded(
-                child: Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(color: Colors.grey, spreadRadius: 1),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          child: IconButton(
-                        iconSize: 20,
-                        tooltip: 'like',
-                        icon: FaIcon(valueVote == 1
-                            ? FontAwesomeIcons.solidThumbsUp
-                            : FontAwesomeIcons.thumbsUp),
-                        onPressed: () {
-                          votePosts(1);
-                        },
-                      )),
-                      Expanded(child: Text(totalVote.toString())),
-                      Expanded(
-                          child: IconButton(
-                        iconSize: 20,
-                        tooltip: 'dislike',
-                        icon: FaIcon(valueVote == -1
-                            ? FontAwesomeIcons.solidThumbsDown
-                            : FontAwesomeIcons.thumbsDown),
-                        onPressed: () {
-                          votePosts(-1);
-                        },
-                      )),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: IconButton(
-                    onPressed: () {
-                      saveOrNot();
-                    },
-                    icon: Icon(isSaved ? Icons.star : Icons.star_border,
-                        color: Colors.yellow)),
-              ),
-            ],
-          ),
-          const Divider(
-            thickness: 5,
-          )
-        ],
+            ),
+            Expanded(
+              child: IconButton(
+                  onPressed: () {
+                    saveOrNot();
+                  },
+                  icon: Icon(isSaved ? Icons.star : Icons.star_border,
+                      color: Colors.yellow)),
+            ),
+          ],
+        ),
+        const Divider(
+          thickness: 5,
+        )
+      ],
     );
   }
 }

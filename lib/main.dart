@@ -1,4 +1,4 @@
-import 'package:bsflutter/login/login_page.dart';
+import 'login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'home_page/home_page.dart';
 
@@ -29,7 +29,6 @@ class MainRouter extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _MainRouter();
   }
-
 }
 
 class _MainRouter extends State<MainRouter> {
@@ -46,12 +45,8 @@ class _MainRouter extends State<MainRouter> {
   Widget _homePage = Container();
 
   _MainRouter() {
-    _login = LoginPage(switchMainRouter: (int v) => {
-      switchRouter(v)
-    });
-    _homePage = MyHomePage(switchMainRouter: (int v) => {
-      switchRouter(v)
-    });
+    _login = LoginPage(switchMainRouter: (int v) => {switchRouter(v)});
+    _homePage = MyHomePage(switchMainRouter: (int v) => {switchRouter(v)});
   }
 
   @override
@@ -65,5 +60,4 @@ class _MainRouter extends State<MainRouter> {
     }
     return _homePage;
   }
-
 }

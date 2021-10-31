@@ -1,5 +1,5 @@
-import 'package:bsflutter/home_page/home/subreddit_page.dart';
-import 'package:bsflutter/home_page/search/request/data_search.dart';
+import '../home/subreddit_page.dart';
+import 'request/data_search.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';

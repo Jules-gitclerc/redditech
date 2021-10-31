@@ -1,4 +1,4 @@
-import 'package:bsflutter/home_page/home/Widget/card_post.dart';
+import 'Widget/card_post.dart';
 import 'package:flutter/material.dart';
 
 class Posts extends StatefulWidget {

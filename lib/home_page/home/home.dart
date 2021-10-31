@@ -1,5 +1,5 @@
-import 'package:bsflutter/home_page/home/Widget/card_post.dart';
-import 'package:bsflutter/home_page/home/request/hot_posts.dart';
+import 'Widget/card_post.dart';
+import 'request/hot_posts.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';

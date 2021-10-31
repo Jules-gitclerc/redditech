@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:bsflutter/home_page/home/request/hot_posts.dart';
-import 'package:bsflutter/home_page/home/request/subreddit.dart';
+import 'request/hot_posts.dart';
+import 'request/subreddit.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:http/http.dart';
@@ -125,76 +125,76 @@ class _SubredditPage extends State<SubredditPage> {
     }
 
     Widget getCardPosts() {
-
       return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: InputDecorator(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0)),
-                contentPadding: const EdgeInsets.all(10),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: dropdownValue,
-                  icon: const Icon(Icons.search),
-                  isDense: true,
-                  isExpanded: true,
-                  items: const [
-                    DropdownMenuItem(
-                      value: '/hot',
-                      child: Text("Hot"),
-                    ),
-                    DropdownMenuItem(
-                      value: '/best',
-                      child: Text("Best"),
-                    ),
-                    DropdownMenuItem(
-                      value: '/new',
-                      child: Text("New"),
-                    ),
-                    DropdownMenuItem(
-                      value: '/random',
-                      child: Text("Random"),
-                    ),
-                    DropdownMenuItem(
-                      value: '/rising',
-                      child: Text("Rising"),
-                    ),
-                    DropdownMenuItem(
-                      value: '/top',
-                      child: Text("Top"),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      after = '';
-                      dropdownValue = newValue!;
-                      isLoadingPosts = true;
-                    });
-                    hotPosts.removeAt(0);
-                    loadDataPosts(10);
-                  },
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0)),
+                  contentPadding: const EdgeInsets.all(10),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: const Icon(Icons.search),
+                    isDense: true,
+                    isExpanded: true,
+                    items: const [
+                      DropdownMenuItem(
+                        value: '/hot',
+                        child: Text("Hot"),
+                      ),
+                      DropdownMenuItem(
+                        value: '/best',
+                        child: Text("Best"),
+                      ),
+                      DropdownMenuItem(
+                        value: '/new',
+                        child: Text("New"),
+                      ),
+                      DropdownMenuItem(
+                        value: '/random',
+                        child: Text("Random"),
+                      ),
+                      DropdownMenuItem(
+                        value: '/rising',
+                        child: Text("Rising"),
+                      ),
+                      DropdownMenuItem(
+                        value: '/top',
+                        child: Text("Top"),
+                      ),
+                    ],
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        after = '';
+                        dropdownValue = newValue!;
+                        isLoadingPosts = true;
+                      });
+                      hotPosts.removeAt(0);
+                      loadDataPosts(10);
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-          for(var item in hotPosts)
-            CardPosts(
-                data: item, isDisableComment: false, isDisableSubAction: true),
-          Container(
-            height: isLoadingPosts ? 50.0 : 0,
-            color: Colors.transparent,
-            child: const Center(
-              child: CircularProgressIndicator(),
+            for (var item in hotPosts)
+              CardPosts(
+                  data: item,
+                  isDisableComment: false,
+                  isDisableSubAction: true),
+            Container(
+              height: isLoadingPosts ? 50.0 : 0,
+              color: Colors.transparent,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
-        ]
-      );
+          ]);
     }
 
     Widget getTabBody() {

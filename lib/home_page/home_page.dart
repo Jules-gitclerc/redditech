@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:bsflutter/home_page/home/home.dart';
-import 'package:bsflutter/home_page/my_profile/my_profile.dart';
-import 'package:bsflutter/home_page/search/search.dart';
+import 'home/home.dart';
+import 'my_profile/my_profile.dart';
+import 'search/search.dart';
 import 'package:flutter/material.dart';
 
 typedef MainRouter = void Function(int value);
@@ -26,7 +26,6 @@ class MyHomePageState extends State<MyHomePage> {
   final Widget _search = const Search();
   static const timeout = Duration(seconds: 3);
   static const ms = Duration(milliseconds: 1);
-
 
   Timer startTimeout([int? milliseconds]) {
     var duration = milliseconds == null
@@ -80,15 +79,19 @@ class MyHomePageState extends State<MyHomePage> {
         currentIndex: selectedIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon((selectedIndex == 0 ? Icons.home : Icons.home_outlined), color: Colors.white),
+            icon: Icon((selectedIndex == 0 ? Icons.home : Icons.home_outlined),
+                color: Colors.white),
             title: const Text("Home", style: TextStyle(color: Colors.white)),
           ),
           BottomNavigationBarItem(
-            icon: Icon((selectedIndex == 1 ? Icons.saved_search : Icons.search), color: Colors.white),
+            icon: Icon((selectedIndex == 1 ? Icons.saved_search : Icons.search),
+                color: Colors.white),
             title: const Text("Search", style: TextStyle(color: Colors.white)),
           ),
           BottomNavigationBarItem(
-            icon: Icon((selectedIndex == 2 ? Icons.person : Icons.person_outline), color: Colors.white),
+            icon: Icon(
+                (selectedIndex == 2 ? Icons.person : Icons.person_outline),
+                color: Colors.white),
             title: const Text("Profile", style: TextStyle(color: Colors.white)),
           )
         ],
