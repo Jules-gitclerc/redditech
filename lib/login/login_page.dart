@@ -17,8 +17,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
-  static const String clientId = 'SjUvT9xx-DqV9ig65JTCmA';
-  static const String clientSecret = 'ra2dL8KdqufMIiPXfRnMnHeVk0NJCw';
+  //static const String clientId = 'SjUvT9xx-DqV9ig65JTCmA';
+  //static const String clientSecret = 'ra2dL8KdqufMIiPXfRnMnHeVk0NJCw';
+  static const String clientId = 'PVEFd7uKmnLKgvlq040c7w';
+  static const String clientSecret = '';
   static const String scope = 'identity+read+account+mysubreddits+subscribe+vote+save+history';
   final LocalStorage storage = LocalStorage('user');
 
